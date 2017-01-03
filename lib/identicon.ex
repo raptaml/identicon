@@ -2,7 +2,8 @@ defmodule Identicon do
 
     def main(input) do
         input 
-        |> hash_input()   
+        |> hash_input()
+        |> set_color()   
     end
 
     @doc
@@ -10,15 +11,19 @@ defmodule Identicon do
 
     """
     defp hash_input(input) do
-        :crypto.hash(:md5, input) 
+        hex = :crypto.hash(:md5, input) 
         |> :binary.bin_to_list()   
+
+        %Identicon.Image{hex: hex}
     end
 
     @doc
     """
 
     """
-    defp do_sthg(username) do
+    defp set_color(image) do
+        color = Enum.chunk(image.hex, 3)
+        image = 
         
     end
 end
