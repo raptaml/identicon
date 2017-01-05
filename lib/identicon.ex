@@ -6,7 +6,9 @@ defmodule Identicon do
         |> set_color()
         |> build_grid
         |> filter_odd
-        |> build_pixel_map   
+        |> build_pixel_map
+        |> draw_image
+        |> save_image(input)
     end
 
     @doc
@@ -58,6 +60,26 @@ defmodule Identicon do
         end)
         %Identicon.Image{image | pixel_map: pixelmap}
  
+    end
+
+    def draw_image(image) do
+        color = image.color
+        pixel_map = image.pixel_map
+
+        img = :egd.create(250, 250)
+        fill = :egd.color(color)
+
+        Enum.each(pixel_map, fn({start, stop}) ->
+            :egd.filledRectangle(img, start, stop, fill)     
+        end)
+
+        :egd.render(img)
+
+    end
+
+    def save_image(img, input) do
+        File.write("#{input}.png", img)
+
     end
 
     defp mirror_row(row) do
